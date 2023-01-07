@@ -12,11 +12,11 @@ pipelines:
               script:
                 - pwd
                 - zip -r $repo-name.zip * .[^.]*
-              artifacts:
-                - 'artifacts/*'
-                - $repo-name.zip
                 - mkdir artifact
                 - cp $repo-name.zip artifact/
+              artifacts:
+                - 'artifacts/*'
+                - $repo-name.zip                
           - step:
               name: Saving on S3
               script:
@@ -45,32 +45,37 @@ pipelines:
                       WARMUP_INTERVAL: 60
                       WAIT: 'true'
 
-    master:
-      - step:
-          name: Build project
-          script:
-            - pwd
-          artifacts:
-            - 'artifact/*'
-            - $repo-name.zip
-
+    master:      
       - stage:
-          name: Deploying on DEV
-          deployment: DEV
-          steps:
-            - step:
-                name: Saving on S3 DEV
+        name: Deploying on Base version in all Environments
+        steps:
+          - step:
+              name: Get project from S3
+              script:
+                - aws s3 cp
+              artifacts:                
+                - $repo-name.zip
+          - parallel:
+            - step:            
+                name: Deploying on AWS ElasticBeanstalk
+                deployment: DEV01
                 script:
-                  - pipe: atlassian/aws-s3-deploy:1.1.0
+                  - pipe: atlassian/aws-elasticbeanstalk-deploy:1.0.2
                     variables:
                       DEBUG: 'true'
                       AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
                       AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
                       AWS_DEFAULT_REGION: $DEV_REGION
-                      S3_BUCKET: '$DEV_S3_OBJECT/$repo-name'
-                      LOCAL_PATH: 'artifact'
-            - step:
-                name: Deploying on AWS ElasticBeanstalk DEV
+                      APPLICATION_NAME: $DEV_APPLICATION_NAME
+                      ENVIRONMENT_NAME: $DEV_ENVIRONMENT_NAME
+                      S3_BUCKET: $DEV_EBS_S3_NAME
+                      ZIP_FILE: '$repo-name.zip'              
+                      WAIT_INTERVAL: 60
+                      WARMUP_INTERVAL: 60
+                      WAIT: 'true'
+            - step:            
+                name: Deploying on AWS ElasticBeanstalk
+                deployment: DEV02
                 script:
                   - pipe: atlassian/aws-elasticbeanstalk-deploy:1.0.2
                     variables:
@@ -86,4 +91,3 @@ pipelines:
                       WARMUP_INTERVAL: 60
                       WAIT: 'true'
 
-  

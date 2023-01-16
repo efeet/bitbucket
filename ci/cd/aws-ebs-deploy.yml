@@ -1,5 +1,6 @@
 image: atlassian/default-image:2
 
+
 pipelines:
   branches:
     develop:

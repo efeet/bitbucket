@@ -17,7 +17,7 @@ pipelines:
                   - cp $repo-name.zip artifact/
                 artifacts:
                   #Using file in artifacts directory to save on S3
-                  - 'artifacts/*'
+                  - 'artifact/*'
                   #Using ZIP file to Deploy
                   - $repo-name.zip
             - step:

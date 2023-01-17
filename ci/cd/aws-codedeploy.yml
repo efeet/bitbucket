@@ -63,77 +63,77 @@ pipelines:
 
     master:      
       - stage:
-        name: Deploying on Base version in all Environments
-        steps:
-          - step:
-              name: Get project from S3
-              script:
-                - aws s3 cp
-              artifacts:                
-                - $repo-name.zip
-          - parallel:
-            steps:
-              - step:            
-                  name: Upload to S3 for Deployment
-                  deployment: DEV01
-                  script:
-                    - pipe: atlassian/aws-code-deploy:1.1.1
-                      variables:
-                        DEBUG: 'true'
-                        AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
-                        AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
-                        AWS_DEFAULT_REGION: $DEV_REGION
-                        COMMAND: 'upload'
-                        APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
-                        S3_BUCKET: $DEV_CDEPLOY_S3_NAME
-                        ZIP_FILE: '$repo-name.zip'
-              - step:            
-                  name: Deploy using AWS CodeDeploy
-                  deployment: DEV01
-                  script:
-                    - pipe: atlassian/aws-code-deploy:1.1.1
-                      variables:
-                        DEBUG: 'true'
-                        AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
-                        AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
-                        AWS_DEFAULT_REGION: $DEV_REGION
-                        COMMAND: 'deploy'
-                        APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
-                        DEPLOYMENT_GROUP: $DEV_CDEPLOY_DEPLOYMENT_NAME
-                        S3_BUCKET: $DEV_CDEPLOY_S3_NAME
-                        IGNORE_APPLICATION_STOP_FAILURES: 'true'
-                        FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
-                        WAIT: 'true'
-          - parallel:
-            steps:
-              - step:            
-                  name: Upload to S3 for Deployment
-                  deployment: DEV02
-                  script:
-                    - pipe: atlassian/aws-code-deploy:1.1.1
-                      variables:
-                        DEBUG: 'true'
-                        AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
-                        AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
-                        AWS_DEFAULT_REGION: $DEV_REGION
-                        COMMAND: 'upload'
-                        APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
-                        S3_BUCKET: $DEV_CDEPLOY_S3_NAME
-                        ZIP_FILE: '$repo-name.zip'
-              - step:            
-                  name: Deploy using AWS CodeDeploy
-                  deployment: DEV02
-                  script:
-                    - pipe: atlassian/aws-code-deploy:1.1.1
-                      variables:
-                        DEBUG: 'true'
-                        AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
-                        AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
-                        AWS_DEFAULT_REGION: $DEV_REGION
-                        COMMAND: 'deploy'
-                        APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
-                        DEPLOYMENT_GROUP: $DEV_CDEPLOY_DEPLOYMENT_NAME
-                        S3_BUCKET: $DEV_CDEPLOY_S3_NAME
-                        IGNORE_APPLICATION_STOP_FAILURES: 'true'
-                        FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
-                        WAIT: 'true'
+          name: Deploying on Base version in all Environments
+          steps:
+            - step:
+                name: Get project from S3
+                script:
+                  - aws s3 cp
+                artifacts:                
+                  - $repo-name.zip
+            - parallel:
+              steps:
+                - step:            
+                    name: Upload to S3 for Deployment
+                    deployment: DEV01
+                    script:
+                      - pipe: atlassian/aws-code-deploy:1.1.1
+                        variables:
+                          DEBUG: 'true'
+                          AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+                          AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+                          AWS_DEFAULT_REGION: $DEV_REGION
+                          COMMAND: 'upload'
+                          APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
+                          S3_BUCKET: $DEV_CDEPLOY_S3_NAME
+                          ZIP_FILE: '$repo-name.zip'
+                - step:            
+                    name: Deploy using AWS CodeDeploy
+                    deployment: DEV01
+                    script:
+                      - pipe: atlassian/aws-code-deploy:1.1.1
+                        variables:
+                          DEBUG: 'true'
+                          AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+                          AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+                          AWS_DEFAULT_REGION: $DEV_REGION
+                          COMMAND: 'deploy'
+                          APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
+                          DEPLOYMENT_GROUP: $DEV_CDEPLOY_DEPLOYMENT_NAME
+                          S3_BUCKET: $DEV_CDEPLOY_S3_NAME
+                          IGNORE_APPLICATION_STOP_FAILURES: 'true'
+                          FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
+                          WAIT: 'true'
+            - parallel:
+              steps:
+                - step:            
+                    name: Upload to S3 for Deployment
+                    deployment: DEV02
+                    script:
+                      - pipe: atlassian/aws-code-deploy:1.1.1
+                        variables:
+                          DEBUG: 'true'
+                          AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+                          AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+                          AWS_DEFAULT_REGION: $DEV_REGION
+                          COMMAND: 'upload'
+                          APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
+                          S3_BUCKET: $DEV_CDEPLOY_S3_NAME
+                          ZIP_FILE: '$repo-name.zip'
+                - step:            
+                    name: Deploy using AWS CodeDeploy
+                    deployment: DEV02
+                    script:
+                      - pipe: atlassian/aws-code-deploy:1.1.1
+                        variables:
+                          DEBUG: 'true'
+                          AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+                          AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+                          AWS_DEFAULT_REGION: $DEV_REGION
+                          COMMAND: 'deploy'
+                          APPLICATION_NAME: $DEV_CDEPLOY_APPLICATION_NAME
+                          DEPLOYMENT_GROUP: $DEV_CDEPLOY_DEPLOYMENT_NAME
+                          S3_BUCKET: $DEV_CDEPLOY_S3_NAME
+                          IGNORE_APPLICATION_STOP_FAILURES: 'true'
+                          FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
+                          WAIT: 'true'

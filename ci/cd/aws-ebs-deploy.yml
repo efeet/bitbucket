@@ -30,21 +30,21 @@ pipelines:
                       S3_BUCKET: '$DEV_S3_OBJECT/$repo-name'
                       LOCAL_PATH: 'artifact'
           - step:
-                name: Deploying on AWS ElasticBeanstalk
-                script:
-                  - pipe: atlassian/aws-elasticbeanstalk-deploy:1.0.2
-                    variables:
-                      DEBUG: 'true'
-                      AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
-                      AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
-                      AWS_DEFAULT_REGION: $DEV_REGION
-                      APPLICATION_NAME: $DEV_APPLICATION_NAME
-                      ENVIRONMENT_NAME: $DEV_ENVIRONMENT_NAME
-                      S3_BUCKET: $DEV_EBS_S3_NAME
-                      ZIP_FILE: '$repo-name.zip'              
-                      WAIT_INTERVAL: 60
-                      WARMUP_INTERVAL: 60
-                      WAIT: 'true'
+              name: Deploying on AWS ElasticBeanstalk
+              script:
+                - pipe: atlassian/aws-elasticbeanstalk-deploy:1.0.2
+                  variables:
+                    DEBUG: 'true'
+                    AWS_ACCESS_KEY_ID: $DEV_AWS_ACCESS_KEY_ID
+                    AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
+                    AWS_DEFAULT_REGION: $DEV_REGION
+                    APPLICATION_NAME: $DEV_APPLICATION_NAME
+                    ENVIRONMENT_NAME: $DEV_ENVIRONMENT_NAME
+                    S3_BUCKET: $DEV_EBS_S3_NAME
+                    ZIP_FILE: '$repo-name.zip'              
+                    WAIT_INTERVAL: 60
+                    WARMUP_INTERVAL: 60
+                    WAIT: 'true'
 
     master:      
       - stage:

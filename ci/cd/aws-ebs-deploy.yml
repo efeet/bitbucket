@@ -28,7 +28,7 @@ pipelines:
                         AWS_SECRET_ACCESS_KEY: $DEV_AWS_SECRET_ACCESS_KEY
                         AWS_DEFAULT_REGION: $DEV_REGION
                         S3_BUCKET: '$DEV_S3_OBJECT/$repo-name'
-                        LOCAL_PATH: 'artifact'
+                        LOCAL_PATH: 'artifacts'
             - step:
                 name: Deploying on AWS ElasticBeanstalk
                 script:
